@@ -1,4 +1,4 @@
-## 模拟时钟 ##
+﻿## 模拟时钟 ##
 
 **模拟时钟** 是更具GDI绘制，并且利用双缓冲去除了图形的闪烁
     
@@ -159,6 +159,7 @@
     }
 
 
-### 三.运行结果： ###
-	![test](http://ww1.sinaimg.cn/mw690/b0c67581gw1ek2r4yq6ggj20h10d5zlk.jpg)
+### 三.运行结果:
+	
+![test](http://ww1.sinaimg.cn/mw690/b0c67581gw1ek2r4yq6ggj20h10d5zlk.jpg)
 
