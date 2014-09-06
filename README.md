@@ -160,5 +160,5 @@
 
 
 ### 三.运行结果： ###
-	![](http://ww1.sinaimg.cn/mw690/b0c67581gw1ek2r4yq6ggj20h10d5zlk.jpg)
+	![test](http://ww1.sinaimg.cn/mw690/b0c67581gw1ek2r4yq6ggj20h10d5zlk.jpg)
 
