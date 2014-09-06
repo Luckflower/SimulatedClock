@@ -1,19 +1,30 @@
-##ģ��ʱ��
----
-###1.ԭ����
-> 
-�������˸�Ⱦ��
-few������ί����
+## 模拟时钟 ##
 
-![github logo](ʱ��/aa.jpg)
+**模拟时钟** 是更具GDI绘制，并且利用双缓冲去除了图形的闪烁
+### 一.思路：###
+1.先画表盘
 
-####���Ĵ��룺
-'''cs
-namespace ʱ��
-{
+		包括：表盘中心，指针，刻度，背景图片
+
+2.添加timer控件
+
+将核心代码(主要是利用GDI做图和双缓冲)放在timer控件的Tick事件中，这样当timer开启时模拟时钟就会动起来，并且时间间隔为Interval：1000，即1s
+
+3.双缓冲
+
+由于时钟没走一秒钟，整个图形都要重新绘制一次，这就导致时钟会不停的闪烁，为了解决此问题，引入了双缓冲
+
+		private BufferedGraphics bGrp;//新建图形的双缓冲区
+
+		Graphics grp = bGrp.Graphics;//将Graphics输入到缓冲区
+
+		this.bGrp.Render();//输出缓冲区的内容
+
+### 二.核心代码 ###
+
     public partial class FormMain : Form
     {
-        private BufferedGraphics bGrp;//�½�ͼ�ε�˫������
+        private BufferedGraphics bGrp;//新建图形的双缓冲区
         public FormMain()
         {
             InitializeComponent();
@@ -22,11 +33,11 @@ namespace ʱ��
         {
             lalTime.Text = DateTime.Now.ToLongTimeString().ToString();
 
-            Graphics grp = bGrp.Graphics;//��Graphics���뵽������
+            Graphics grp = bGrp.Graphics;//将Graphics输入到缓冲区
 
-            grp.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;//��ø������ĵĻ�ͼ��壬ʹͼ���������
+            grp.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;//获得高质量的的绘图面板，使图像更加清晰
             grp.Clear(this.panDrawTimer.BackColor);
-            //��ʱ������Բ��
+            //画时钟中心圆点
             PointF centerPoint = new PointF();
             centerPoint.X = this.panDrawTimer.Width / 2f;
             centerPoint.Y = this.panDrawTimer.Height / 2f;
@@ -39,7 +50,7 @@ namespace ʱ��
             grp.FillEllipse(Brushes.Red,smallRect);
 
 
-            //������
+            //画表盘
             //float largerRadius = (this.panDrawTimer.Width >= this.panDrawTimer.Height)?
               //                    this.panDrawTimer.Height / 2f:
                //                  this.panDrawTimer.Width / 2f;
@@ -59,12 +70,12 @@ namespace ʱ��
             Pen pen = new Pen(Color.Black);
             grp.DrawEllipse(pen,largerRect);
 
-            //Ϊʱ�����ӱ���ͼƬ
+            //为时钟添加背景图片
             Image image = Image.FromFile("aa.jpg");
             Brush brush = new TextureBrush(image);
             grp.FillEllipse(brush,largerRect);
 
-            //�ڱ����ϻ�ʱ��̶�
+            //在表盘上画时针刻度
             Pen penSmall = new Pen(Color.Blue);
             float hAnglePer = (float)(2 * Math.PI / 12);
 
@@ -80,7 +91,7 @@ namespace ʱ��
                 grp.DrawLine(penSmall,startPoint,endPoint);
             }
 
-            //������̶�
+            //画分针刻度
             float mAnglePer = (float)(2*Math.PI / 60);
             Pen penLarger = new Pen(Color.Green);
             for (int index = 0; index < 60; index++)
@@ -95,7 +106,7 @@ namespace ʱ��
                 grp.DrawLine(penLarger,startPoint,endPoint);
             }
 
-            //�ڱ����ϻ�ָ��
+            //在表盘上画指针
             int hour = DateTime.Now.Hour;
             int minute = DateTime.Now.Minute;
             int second = DateTime.Now.Second;
@@ -129,7 +140,7 @@ namespace ʱ��
             penArrow = new Pen(Color.Pink);
             grp.DrawLine(penArrow, centerPoint, pointArrow);
 
-            this.bGrp.Render();//���������������
+            this.bGrp.Render();//输出缓冲区的内容
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -145,5 +156,8 @@ namespace ʱ��
             this.bGrp = BufferedGraphicsManager.Current.Allocate(grp, this.panDrawTimer.ClientRectangle);
         }
     }
-}
-'''
+
+
+
+### 三.运行结果： ###
+
