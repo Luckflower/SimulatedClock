@@ -1,6 +1,7 @@
 ## 模拟时钟 ##
 
 **模拟时钟** 是更具GDI绘制，并且利用双缓冲去除了图形的闪烁
+    
 ### 一.思路：###
 1.先画表盘
 
@@ -21,7 +22,7 @@
 		this.bGrp.Render();//输出缓冲区的内容
 
 ### 二.核心代码 ###
-
+    C#:
     public partial class FormMain : Form
     {
         private BufferedGraphics bGrp;//新建图形的双缓冲区
@@ -158,6 +159,6 @@
     }
 
 
-
 ### 三.运行结果： ###
+	![test](test.png)
 
